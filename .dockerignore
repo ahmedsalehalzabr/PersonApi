@@ -1,0 +1,11 @@
+**/bin
+**/obj
+**/.vs
+**/.vscode
+**/appsettings.Development.json
+**/PersonApi.http
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
