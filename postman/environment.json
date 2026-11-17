@@ -1,6 +1,6 @@
 {
-  "id": "...",
-  "name": "local",
+  "id": "local-env",
+  "name": "Local",
   "values": [
     {
       "key": "baseUrl",
