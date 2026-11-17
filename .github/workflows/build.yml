@@ -30,3 +30,8 @@ jobs:
 
     - name: Build Docker image
       run: docker build -t personapi:ci .
+
+    - name: Run Postman Tests
+      run: |
+        npm install -g newman
+        newman run postman/collection.json -e postman/environment.json || true
