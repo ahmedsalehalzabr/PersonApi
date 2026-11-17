@@ -10,6 +10,22 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    # 1. إضافة خدمة قاعدة بيانات PostgreSQL
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: program
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: persons
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -31,7 +47,17 @@ jobs:
     - name: Build Docker image
       run: docker build -t personapi:ci .
 
+    # 2. تشغيل تطبيقك في الخلفية (Docker) مع ربطه بقاعدة البيانات
+    - name: Run Application in Background
+      run: |
+        docker run -d --name myapp -p 8080:8080 \
+          -e "ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=persons;Username=program;Password=test" \
+          personapi:ci
+        # الانتظار قليلاً حتى يبدأ التطبيق بالعمل
+        sleep 15
+
+    # 3. الآن Newman سيجد التطبيق ويعمل بنجاح
     - name: Run Postman Tests
       run: |
         npm install -g newman
-        newman run postman/collection.json -e postman/environment.json || true
+        newman run postman/collection.json -e postman/environment.json
