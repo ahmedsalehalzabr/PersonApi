@@ -9,6 +9,7 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// دعم متغيرات البيئة (مهم جداً للنشر على Render أو GitHub Actions)
 var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 if (!string.IsNullOrEmpty(databaseUrl))
 {
@@ -21,6 +22,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 var app = builder.Build();
+
+// إنشاء قاعدة البيانات والجداول تلقائياً عند التشغيل
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated(); // أو db.Database.Migrate(); إذا كنت تستخدم Migrations
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
