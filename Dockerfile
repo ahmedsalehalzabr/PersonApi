@@ -18,9 +18,11 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-ENV ASPNETCORE_URLS=http://+:${PORT:-80}
+# تم التعديل هنا: تثبيت المنفذ على 8080
+ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-EXPOSE 80
+# تم التعديل هنا: المنفذ 8080
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "PersonApi.dll"]
