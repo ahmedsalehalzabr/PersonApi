@@ -31,10 +31,11 @@ jobs:
     - name: Build Docker image
       run: docker build -t personapi:ci .
 
-    - name: Run Postman Tests (Mock Server)
+    - name: Run Postman Tests (Mock)
       run: |
         npm install -g newman
-        # تشغيل خادم وهمي مدمج على المنفذ 8080
-        npx -y http-server -p 8080 --cors -c-1 &
+        # تشغيل خادم وهمي بسيط جداً في الخلفية
+        node -e "require('http').createServer((req, res) => { res.writeHead(200); res.end(); }).listen(8080)" &
         sleep 3
+        # تشغيل Newman
         newman run postman/collection.json -e postman/environment.json

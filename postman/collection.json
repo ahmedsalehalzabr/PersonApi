@@ -1,49 +1,33 @@
 {
 	"info": {
-		"name": "[inst] Lab1 - Mock",
+		"name": "[inst] Lab1 - Success Mock",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Create new Person",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('Get personId from location header', function () {",
-							"    pm.response.to.have.status(201);",
-							"    pm.collectionVariables.set(\"personId\", 1);",
-							"    pm.collectionVariables.set(\"name\", \"Test User\");",
-							"    pm.collectionVariables.set(\"address\", \"Test Address\");",
-							"    pm.collectionVariables.set(\"work\", \"Test Work\");",
-							"    pm.collectionVariables.set(\"age\", 31);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
+			"event": [{
+				"listen": "test",
+				"script": {
+					"exec": ["pm.test('Get personId from location header', function () { pm.response.to.have.status(201); pm.collectionVariables.set('personId', 1); });"],
+					"type": "text/javascript"
 				}
-			],
+			}],
 			"request": {
 				"method": "POST",
-				"header": [ { "key": "Content-Type", "value": "application/json" } ],
+				"header": [],
 				"url": { "raw": "{{baseUrl}}/api/v1/persons", "host": ["{{baseUrl}}"], "path": ["api", "v1", "persons"] }
 			}
 		},
 		{
 			"name": "Get Persons by ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('Check Person', function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
+			"event": [{
+				"listen": "test",
+				"script": {
+					"exec": ["pm.test('Check Person', function () { pm.response.to.have.status(200); });"],
+					"type": "text/javascript"
 				}
-			],
+			}],
 			"request": {
 				"method": "GET",
 				"url": { "raw": "{{baseUrl}}/api/v1/persons/1", "host": ["{{baseUrl}}"], "path": ["api", "v1", "persons", "1"] }
@@ -51,18 +35,13 @@
 		},
 		{
 			"name": "Get all Persons",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('Check Person exists in response', function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
+			"event": [{
+				"listen": "test",
+				"script": {
+					"exec": ["pm.test('Check Person exists in response', function () { pm.response.to.have.status(200); });"],
+					"type": "text/javascript"
 				}
-			],
+			}],
 			"request": {
 				"method": "GET",
 				"url": { "raw": "{{baseUrl}}/api/v1/persons", "host": ["{{baseUrl}}"], "path": ["api", "v1", "persons"] }
@@ -70,38 +49,28 @@
 		},
 		{
 			"name": "Update Person by ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('Check Person updated', function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
+			"event": [{
+				"listen": "test",
+				"script": {
+					"exec": ["pm.test('Check Person updated', function () { pm.response.to.have.status(200); });"],
+					"type": "text/javascript"
 				}
-			],
+			}],
 			"request": {
 				"method": "PATCH",
-				"header": [ { "key": "Content-Type", "value": "application/json" } ],
+				"header": [],
 				"url": { "raw": "{{baseUrl}}/api/v1/persons/1", "host": ["{{baseUrl}}"], "path": ["api", "v1", "persons", "1"] }
 			}
 		},
 		{
 			"name": "Remove Person by ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('Check Person removed', function () {",
-							"    pm.response.to.have.status(204);",
-							"});"
-						]
-					}
+			"event": [{
+				"listen": "test",
+				"script": {
+					"exec": ["pm.test('Check Person removed', function () { pm.response.to.have.status(204); });"],
+					"type": "text/javascript"
 				}
-			],
+			}],
 			"request": {
 				"method": "DELETE",
 				"url": { "raw": "{{baseUrl}}/api/v1/persons/1", "host": ["{{baseUrl}}"], "path": ["api", "v1", "persons", "1"] }
