@@ -10,7 +10,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    # 1. إضافة خدمة قاعدة بيانات PostgreSQL
     services:
       postgres:
         image: postgres:13
@@ -47,16 +46,14 @@ jobs:
     - name: Build Docker image
       run: docker build -t personapi:ci .
 
-    # 2. تشغيل تطبيقك في الخلفية (Docker) مع ربطه بقاعدة البيانات
     - name: Run Application in Background
       run: |
         docker run -d --name myapp -p 8080:8080 \
           -e "ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=persons;Username=program;Password=test" \
+          -e "ASPNETCORE_ENVIRONMENT=Development" \
           personapi:ci
-        # الانتظار قليلاً حتى يبدأ التطبيق بالعمل
-        sleep 15
+        sleep 20
 
-    # 3. الآن Newman سيجد التطبيق ويعمل بنجاح
     - name: Run Postman Tests
       run: |
         npm install -g newman
