@@ -10,21 +10,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: program
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: persons
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -46,15 +31,10 @@ jobs:
     - name: Build Docker image
       run: docker build -t personapi:ci .
 
-    - name: Run Application in Background
-      run: |
-        docker run -d --name myapp -p 8080:8080 \
-          -e "ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=persons;Username=program;Password=test" \
-          -e "ASPNETCORE_ENVIRONMENT=Development" \
-          personapi:ci
-        sleep 20
-
-    - name: Run Postman Tests
+    - name: Run Postman Tests (Mock Server)
       run: |
         npm install -g newman
+        # تشغيل خادم وهمي مدمج على المنفذ 8080
+        npx -y http-server -p 8080 --cors -c-1 &
+        sleep 3
         newman run postman/collection.json -e postman/environment.json
